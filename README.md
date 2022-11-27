@@ -34,7 +34,7 @@ pip3 install --user shapely
 # Download PointGAT
 Clone the repository recursively:
 ```
-git clone --recursive
+git clone git@github.com:abisha-thapa/PointGAT.git --recursive
 ```
 # KITTI Dataset
 Following is the KITTI dataset structure:
