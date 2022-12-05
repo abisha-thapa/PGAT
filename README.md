@@ -144,7 +144,6 @@ Evaluate output results on the validation split:
 evaluate_object_offline DATASET_ROOT_DIR/labels/training/label_2/ DIR_TO_SAVE_RESULTS
 ```
 
-```
 We can view train_config for training and make change in parameter depending on our evaluation.
 Some common parameters which you might want to change first:
 ```
