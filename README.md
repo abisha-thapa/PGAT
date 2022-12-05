@@ -1,7 +1,7 @@
 # Performance Analysis of Graph Neural Network on Small Point Cloud Object
 
 This is a course research project. We have considered Point-GNN as the baseline of this project. Pedestrians and cyclists objects are comparatively smaller than car and are objects of interest for this project. 
-We have changed the feature update process of GNN in Point-GNN with attention mechanism.
+We have changed the feature update process of GNN in Point-GNN with an attention mechanism.
 
 
 If you find this code useful in your research, please consider citing their work:
@@ -90,7 +90,7 @@ optional arguments:
 ```
 For example:
 ```
-python3 train.py configs/ped_cyl_auto_T2_attn_trainval_train_config configs/ped_cyl_auto_T2_attn_trainval_config --dataset_root_dir dataset/kitti --dataset_split_file splits/trainval_attn_pedestrian_cyclist.txt
+python3 train.py configs/ped_cyl_auto_T2_attn_trainval_train_config configs/ped_cyl_auto_T2_attn_trainval_config --dataset_root_dir dataset --dataset_split_file splits/train_attn_pedestrian_cyclist.txt
 ```
 
 ## Inference
@@ -101,7 +101,7 @@ python3 run.py checkpoints/ped_cyl_auto_attn_T2_trainval/ --dataset_root_dir DAT
 ```
 Test on the test dataset:
 ```
-python3 run.py checkpoints/ped_cyl_auto_attn_T2_trainval/ --test --dataset_root_dir DATASET_ROOT_DIR --output_dir DIR_TO_SAVE_RESULTS
+python3 run.py checkpoints/ped_cyl_auto_attn_T2_trainval/ --test --dataset_root_dir dataset --output_dir DIR_TO_SAVE_RESULTS
 ```
 ```
 usage: run.py [-h] [-l LEVEL] [--test] [--no-box-merge] [--no-box-score]
@@ -132,4 +132,38 @@ optional arguments:
  ```
 
 
+### Performance
+Install kitti_native_evaluation offline evaluation:
+```
+cd kitti_native_evaluation
+cmake ./
+make
+```
+Evaluate output results on the validation split:
+```
+evaluate_object_offline DATASET_ROOT_DIR/labels/training/label_2/ DIR_TO_SAVE_RESULTS
+```
 
+```
+We can view train_config for training and make change in parameter depending on our evaluation.
+Some common parameters which you might want to change first:
+```
+train_dir     The directory where checkpoints and logs are stored.
+train_dataset The dataset split file for training. 
+NUM_GPU       The number of GPUs to use. We used two GPUs for the reference model. 
+              If you want to use a single GPU, you might also need to reduce the batch size by half to save GPU memory.
+              Similarly, you might want to increase the batch size if you want to utilize more GPUs. 
+              Check the train.py for details.               
+```
+We also provide an evaluation script to evaluate the checkpoints periodically. For example:
+```
+python3 eval.py configs/ped_cyl_auto_attn_T2_train_eval_config
+```
+You can use a tensorboard to view the training and evaluation status. 
+```
+tensorboard --logdir=./train_dir
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
